@@ -1,0 +1,19 @@
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+
+// Conexión a MongoDB
+mongoose.connect(
+'')
+  .then(() => console.log('Conectado a MongoDB'))
+  .catch(error => console.log('Error de conexión:', error))
+
+app.listen(3000, function() {
+  console.log('Servidor corriendo en http://localhost:3000')
+})
+
