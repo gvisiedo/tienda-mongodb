@@ -8,8 +8,7 @@ app.use(cors())
 app.use(express.json())
 
 // Conexión a MongoDB
-mongoose.connect(
-'')
+mongoose.connect('mongodb://localhost:27017/tienda')
   .then(() => console.log('Conectado a MongoDB'))
   .catch(error => console.log('Error de conexión:', error))
 
