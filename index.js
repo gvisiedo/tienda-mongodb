@@ -62,7 +62,7 @@ app.post('/productos', async function(req, res) {
 app.put('/productos/:id', async function(req, res) {
   try {
     const productos = await Producto.findByIdAndUpdate(req.params.id, req.body,{new:true})
-    if(!producto) {
+    if(!productos) {
   res.status(404).json({ error: 'Producto no encontrado' })
   return
 }
@@ -75,7 +75,7 @@ app.put('/productos/:id', async function(req, res) {
 app.delete('/productos/:id', async function(req, res) {
   try {
     const productos = await Producto.findByIdAndDelete(req.params.id)
-    if(!producto) {
+    if(!productos) {
   res.status(404).json({ error: 'Producto no encontrado' })
   return
 }
