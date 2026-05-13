@@ -26,7 +26,9 @@ const Producto = mongoose.model('Producto', productoSchema)
 
 app.get('/productos', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const categoria = req.query.categoria
+    const query = categoria ? {categoria: categoria} : {}
+    const productos = await Producto.find(query)
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -36,7 +38,7 @@ app.get('/productos', async function(req, res) {
 app.get('/productos/:id', async function(req, res) {
   try {
     const productos = await Producto.findById(req.params.id)
-    if(!producto){
+    if(!productos){
       res.status(404).json({error:'Producto no encontrado'})
       return
     }
@@ -47,21 +49,10 @@ app.get('/productos/:id', async function(req, res) {
   }
 })
 
-app.get('/productos', async function(req, res) {
-  try {
-    const productos = await Producto.findOne(req.query.categoria)
-    if(!categoria){
-      res.status(404).json({error:'Categoria no encontrada'})
-    }
-    
-    res.json(productos)
-  } catch(error) {
-    res.status(500).json({ error: 'Error al obtener productos' })
-  }
-})
 app.post('/productos', async function(req, res) {
   try {
-    const productos = await new Producto().sava()
+    const productos = new Producto(req.body)
+    await productos.save()
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -70,7 +61,11 @@ app.post('/productos', async function(req, res) {
 
 app.put('/productos/:id', async function(req, res) {
   try {
-    const productos = await Producto.findByIdAndUpdate()
+    const productos = await Producto.findByIdAndUpdate(req.params.id, req.body,{new:true})
+    if(!producto) {
+  res.status(404).json({ error: 'Producto no encontrado' })
+  return
+}
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -79,7 +74,11 @@ app.put('/productos/:id', async function(req, res) {
 
 app.delete('/productos/:id', async function(req, res) {
   try {
-    const productos = await Producto.findByIdAndDelete()
+    const productos = await Producto.findByIdAndDelete(req.params.id)
+    if(!producto) {
+  res.status(404).json({ error: 'Producto no encontrado' })
+  return
+}
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
