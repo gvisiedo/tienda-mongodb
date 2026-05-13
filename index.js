@@ -35,16 +35,25 @@ app.get('/productos', async function(req, res) {
 
 app.get('/productos/:id', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const productos = await Producto.findById(req.params.id)
+    if(!producto){
+      res.status(404).json({error:'Producto no encontrado'})
+      return
+    }
+
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
   }
 })
 
-app.get('/productos?categoria=x', async function(req, res) {
+app.get('/productos', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const productos = await Producto.findOne(req.query.categoria)
+    if(!categoria){
+      res.status(404).json({error:'Categoria no encontrada'})
+    }
+    
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -52,7 +61,7 @@ app.get('/productos?categoria=x', async function(req, res) {
 })
 app.post('/productos', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const productos = await new Producto().sava()
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -61,7 +70,7 @@ app.post('/productos', async function(req, res) {
 
 app.put('/productos/:id', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const productos = await Producto.findByIdAndUpdate()
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
@@ -70,7 +79,7 @@ app.put('/productos/:id', async function(req, res) {
 
 app.delete('/productos/:id', async function(req, res) {
   try {
-    const productos = await Producto.find()
+    const productos = await Producto.findByIdAndDelete()
     res.json(productos)
   } catch(error) {
     res.status(500).json({ error: 'Error al obtener productos' })
